@@ -1,0 +1,38 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: logilica-go
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: logilica-app
+  template:
+    metadata:
+      labels:
+        app: logilica-app
+    spec:
+      containers:
+        - name: my-go
+          image: quay.io/kmamgain/logilica-integration:latest
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              memory: "10Mi"
+              cpu: "10m"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: logilica-go-svc
+spec:
+ports:
+  - name: http-8080
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+selector:
+  app: logilica-app
