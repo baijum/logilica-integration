@@ -1,13 +1,24 @@
 package main
 
 import (
-	"net/http"
-
+	"encoding/json"
+	"fmt"
+	gogi "github.com/google/go-github/v57/github"
 	"github.com/gorilla/mux"
 	"github.com/urfave/negroni"
+	"net/http"
 )
 
 func HandleWebhook(w http.ResponseWriter, r *http.Request) {
+	var req gogi.Issue
+	json.NewDecoder(r.Body).Decode(&req)
+	fmt.Println(req)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(`{"test": "ok}`))
+}
+
+func Handler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(`{"test": "ok}`))
@@ -16,7 +27,8 @@ func HandleWebhook(w http.ResponseWriter, r *http.Request) {
 func route() (n *negroni.Negroni, rt *mux.Router) {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/", HandleWebhook).Methods("GET", "POST")
+	router.HandleFunc("/", Handler).Methods("GET")
+	router.HandleFunc("/", HandleWebhook).Methods("POST")
 	n = negroni.New(negroni.NewRecovery(), negroni.NewLogger())
 	return n, router
 }
