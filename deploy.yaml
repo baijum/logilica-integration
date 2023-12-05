@@ -29,10 +29,10 @@ apiVersion: v1
 metadata:
   name: logilica-go-svc
 spec:
-ports:
-  - name: http-8080
-    port: 8080
-    protocol: TCP
-    targetPort: 8080
-selector:
-  app: logilica-app
+  ports:
+    - name: http-8080
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: logilica-app
