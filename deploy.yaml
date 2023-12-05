@@ -36,3 +36,15 @@ spec:
       targetPort: 8080
   selector:
     app: logilica-app
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: logilica
+spec:
+  to:
+    kind: Service
+    name: logilica-go-svc
+    weight: 100
+  port:
+    targetPort: http-8080
