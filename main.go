@@ -16,7 +16,7 @@ func HandleWebhook(w http.ResponseWriter, r *http.Request) {
 func route() (n *negroni.Negroni, rt *mux.Router) {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/", HandleWebhook).Methods("GET")
+	router.HandleFunc("/", HandleWebhook).Methods("GET", "POST")
 	n = negroni.New(negroni.NewRecovery(), negroni.NewLogger())
 	return n, router
 }
